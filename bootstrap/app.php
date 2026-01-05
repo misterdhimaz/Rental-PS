@@ -11,15 +11,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-    ]);
-})
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // 1. Trust Proxies: Harus dipanggil sebagai method, bukan di dalam alias
+        $middleware->trustProxies(at: '*');
+
+        // 2. Alias: Digunakan untuk mendaftarkan middleware custom kamu
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
+    ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
-
-

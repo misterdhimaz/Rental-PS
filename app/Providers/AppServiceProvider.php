@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
         // Buat folder view secara paksa jika belum ada
         if (!is_dir('/tmp/storage/framework/views')) {
             mkdir('/tmp/storage/framework/views', 0755, true);
+        }
+
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
         }
     }
 }
