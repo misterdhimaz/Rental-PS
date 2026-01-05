@@ -11,7 +11,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if (config('app.env') === 'production') {
+        if (!is_dir('/tmp/storage/framework/views')) {
+            mkdir('/tmp/storage/framework/views', 0755, true);
+        }
+    }
     }
 
     /**
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (config('app.env') === 'production') {
+        config(['view.compiled' => '/tmp/storage/framework/views']);
+    }
     }
 }
